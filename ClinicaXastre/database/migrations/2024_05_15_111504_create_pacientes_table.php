@@ -16,7 +16,11 @@ class CreatePacientesTable extends Migration
         Schema::create('pacientes', function (Blueprint $table) {
             $table->id();
             $table->string('nome'); // Nome completo do paciente
-            $table->text('endereco'); // Endereço residencial do paciente
+            $table->string('cep'); // CEP do paciente
+            $table->string('rua'); // Rua do endereço do paciente
+            $table->string('bairro'); // Bairro do endereço do paciente
+            $table->string('cidade'); // Cidade do endereço do paciente
+            $table->string('estado'); // Estado do endereço do paciente
             $table->string('numero'); // Número de celular do paciente
             $table->timestamps(); // Cria os campos created_at e updated_at
         });

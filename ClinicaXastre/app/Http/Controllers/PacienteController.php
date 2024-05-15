@@ -49,10 +49,14 @@ class PacienteController extends Controller
     {
       $created = $this->paciente->create([
         'nome' => $request->input('nome'),
-        'endereco' => $request->input('endereco'),
+        'estado' => $request->input('estado'),
+        'cep' => $request->input('cep'),
+        'bairro' => $request->input('bairro'),
+        'cidade' => $request->input('cidade'),
+        'rua' => $request->input('rua'),
         'numero' => $request->input('numero'),
       ]);
 
-      return view('welcome');
+      return view('home');
     }
 }
