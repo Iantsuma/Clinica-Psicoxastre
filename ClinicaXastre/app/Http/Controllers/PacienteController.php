@@ -56,7 +56,5 @@ class PacienteController extends Controller
         'rua' => $request->input('rua'),
         'numero' => $request->input('numero'),
       ]);
-
-      return view('home');
     }
 }
