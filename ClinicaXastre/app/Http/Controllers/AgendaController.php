@@ -38,4 +38,21 @@ class AgendaController extends Controller
             return response()->json(['message' => 'Erro ao criar agendamento'], 500);
         }
     }
+
+    public function ler()
+    {
+        $userId = auth()->id();
+        $agenda = $this->agenda->where('user_id', $userId)->get();
+        return view('historico', ['agenda' => $agenda]);
+    }
+
+    public function read()
+    {
+        $userId = auth()->id();
+        $agenda = $this->agenda->where('user_id', $userId)
+                                ->whereIn('status', ['agendado', 'em-espera'])
+                                ->get();
+                                
+        return view('historico', ['agenda' => $agenda]);
+    }
 }

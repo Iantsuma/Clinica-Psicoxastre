@@ -10,6 +10,8 @@ Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('/cliente', [AgendaController::class, 'index'])->name('agenda.index');
 Route::get('/cliente/agendar', [AgendaController::class, 'create'])->name('agenda.create');
 Route::post('/cliente/agendar/sessao', [AgendaController::class, 'store'])->name('agenda.store');
+Route::get('/cliente/historico', [AgendaController::class, 'ler'])->name('agenda.ler');
+Route::get('/cliente/proximas', [AgendaController::class, 'read'])->name('agenda.read');
 
 Route::get('/paciente', [ProfileController::class, 'create'])->name('profile.create');
 Route::post('/paciente/cadastro', [ProfileController::class, 'store'])->name('profile.store');

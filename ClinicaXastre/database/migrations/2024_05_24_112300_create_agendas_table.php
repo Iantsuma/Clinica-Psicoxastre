@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('agendas', function (Blueprint $table) {
             $table->id();
             $table->string('nome'); // Campo para o nome
-            $table->integer('user_id'); // Campo para o id_user
+            $table->unsignedBigInteger('user_id'); // Campo para o id_user
             $table->text('descricao'); // Campo para a descrição
             $table->string('status'); // Campo para o status
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         
         });
     }

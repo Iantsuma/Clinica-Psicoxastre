@@ -5,22 +5,9 @@
                 <h1>Agendar</h1>
                 <form @submit.prevent="submitForm">
                     <div class="mb-3">
-                        <label for="nome">Nome</label>
-                        <input type="text" class="form-control" v-model="form.nome" placeholder="Nome" required>
-                    </div>
-                    <div class="mb-3">
                         <label for="descricao">Descrição</label>
                         <input type="text" class="form-control" v-model="form.descricao" placeholder="Descrição" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="id_user">ID User</label>
-                        <input type="text" class="form-control" v-model="form.id_user" placeholder="ID User" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="status">Status</label>
-                        <input type="text" class="form-control" v-model="form.status" placeholder="Status" required>
-                    </div>
-                    
                     <div class="form-group">
                         <input type="submit" class="btn btn-success" value="Cadastrar">
                     </div>
@@ -37,14 +24,22 @@ export default {
         storeRoute: {
             type: String,
             required: true
+        },
+        userId: {
+            type: Number,
+            required: true
+        },
+        userName: {
+            type: String,
+            required: true
         }
     },
     data() {
         return {
             form: {
-                nome: '',
-                id_user: '',
-                status: '',
+                nome: this.userName,
+                id_user: this.userId,
+                status: 'agendado',
                 descricao: ''
             }
         };

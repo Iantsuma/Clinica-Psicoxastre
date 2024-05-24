@@ -53,15 +53,15 @@ class ProfileController extends Controller
     public function store(Request $request)
     {
       $created = $this->user->create([
-        'nome' => 'Pedro',
-        'estado' => 'Bahia',
-        'cep' => '1341',
-        'bairro' => 'iufhuh',
-        'cidade' => 'aojdfa',
-        'rua' => 'ojasfoa',
-        'numero' => '1298734',
-        'email' => 'iadjfhijh',
-        'password' => '1982347',
+        'nome' => $request->input('nome'),
+        'estado' => $request->input('estado'),
+        'cep' => $request->input('cep'),
+        'bairro' => $request->input('bairro'),
+        'cidade' => $request->input('cidade'),
+        'rua' => $request->input('rua'),
+        'numero' => $request->input('numero'),
+        'email' => $request->input('email'),
+        'password' => $request->input('password'),
         'role' => 1,
       ]);
     }

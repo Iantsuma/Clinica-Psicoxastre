@@ -7,6 +7,7 @@ import EditarPacientes from './components/EditarPacientes.vue';
 import AlterarPaciente from './components/AlterarPaciente.vue';
 import Cliente from './components/Cliente.vue';
 import Agendar from './components/Agendar.vue';
+import Historico from './components/Historico.vue';
 
 
 const app = createApp();
@@ -18,6 +19,7 @@ app.component('editar-pacientes', EditarPacientes);
 app.component('alterar-paciente', AlterarPaciente);
 app.component('cliente', Cliente);
 app.component('agendar', Agendar);
+app.component('historico', Historico);
 
 app.mount('#app');
 
