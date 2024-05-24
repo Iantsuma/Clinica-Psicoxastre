@@ -13,8 +13,15 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nome')->nullable(); // Nome completo do paciente
+            $table->string('cep')->nullable(); // CEP do paciente
+            $table->string('rua')->nullable(); // Rua do endereço do paciente
+            $table->string('bairro')->nullable(); // Bairro do endereço do paciente
+            $table->string('cidade')->nullable(); // Cidade do endereço do paciente
+            $table->string('estado')->nullable(); // Estado do endereço do paciente
+            $table->string('numero')->nullable(); // Número de celular do paciente
             $table->string('email')->unique();
+            $table->integer('role');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

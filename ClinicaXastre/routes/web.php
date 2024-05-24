@@ -1,15 +1,27 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AgendaController;
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
 
-Route::get('/paciente', [PacienteController::class, 'create'])->name('paciente.create');
-Route::post('/paciente/cadastro', [PacienteController::class, 'store'])->name('paciente.store');
-Route::get('/psicologa', [PacienteController::class, 'index'])->name('paciente.index');
-Route::get('/psicologa/ler', [PacienteController::class, 'ler'])->name('paciente.ler');
-Route::get('/psicologa/ler/editar/{paciente}', [PacienteController::class, 'editar'])->name('paciente.editar');
-Route::put('/psicologa/ler/editar/{paciente}/alterar', [PacienteController::class, 'alterar'])->name('paciente.alterar');
+Route::get('/cliente', [AgendaController::class, 'index'])->name('agenda.index');
+Route::get('/cliente/agendar', [AgendaController::class, 'create'])->name('agenda.create');
+Route::post('/cliente/agendar/sessao', [AgendaController::class, 'store'])->name('agenda.store');
 
+Route::get('/paciente', [ProfileController::class, 'create'])->name('profile.create');
+Route::post('/paciente/cadastro', [ProfileController::class, 'store'])->name('profile.store');
+Route::get('/psicologa', [ProfileController::class, 'index'])->name('profile.index');
+Route::get('/psicologa/ler', [ProfileController::class, 'ler'])->name('profile.ler');
+Route::get('/psicologa/ler/editar/{user}', [ProfileController::class, 'editar'])->name('profile.editar');
+Route::put('/psicologa/ler/editar/{user}/alterar', [ProfileController::class, 'alterar'])->name('profile.alterar');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';

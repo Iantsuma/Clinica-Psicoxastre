@@ -2,7 +2,7 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          <h1>Cadastro de Pacientes</h1>
+          <h1>Edição de Pacientes</h1>
           <form @submit.prevent="submitForm">
             <div class="mb-3">
               <label for="nome">Nome</label>
@@ -36,12 +36,8 @@
               <label for="numero">Email</label>
               <input type="text" class="form-control" v-model="form.email" placeholder="Email" required>
             </div>
-            <div class="mb-3">
-              <label for="numero">Senha</label>
-              <input type="text" class="form-control" v-model="form.password" placeholder="Senha" required>
-            </div>
             <div class="form-group">
-              <input type="submit" class="btn btn-success" value="Cadastrar">
+              <input type="submit" class="btn btn-success" value="Salvar">
             </div>
             <hr>
           </form>
@@ -53,23 +49,26 @@
   <script>
   export default {
     props: {
-      storeRoute: {
+      updateRoute: {
         type: String,
+        required: true
+      },
+      user: {
+        type: Object,
         required: true
       }
     },
     data() {
       return {
         form: {
-          nome: '',
-          cep: '',
-          rua: '',
-          bairro: '',
-          cidade: '',
-          estado: '',
-          numero: '',
-          email: '',
-          password: ''
+          nome: this.user.nome || '',
+          cep: this.user.cep || '',
+          rua: this.user.rua || '',
+          bairro: this.user.bairro || '',
+          cidade: this.user.cidade || '',
+          estado: this.user.estado || '',
+          numero: this.user.numero || '',
+          email: this.user.email || ''
         }
       };
     },
@@ -93,21 +92,21 @@
           .catch(() => alert('Falha ao buscar o CEP.'));
       },
       submitForm() {
-    fetch(this.storeRoute, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-      },
-      body: JSON.stringify(this.form)
-    })
-    .then(() => {
-        window.location.href = '/'; // ou o caminho correto da sua rota home
-    })
-    .catch(error => {
-        console.error('Erro ao submeter o formulário:', error);
-    });
-}
+        fetch(this.updateRoute, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify(this.form)
+        })
+        .then(() => {
+          window.location.href = '/psicologa'; // ou o caminho correto da sua rota home
+        })
+        .catch(error => {
+          console.error('Erro ao submeter o formulário:', error);
+        });
+      }
     }
   };
   </script>

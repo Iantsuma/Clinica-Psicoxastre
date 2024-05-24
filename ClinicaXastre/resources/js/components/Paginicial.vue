@@ -2,6 +2,7 @@
   <div class="container">
     <h1 class="logo">Clínica</h1>
     <div class="buttons">
+      <button @click="navigateTo(clienteRoute)">Cliente</button>
       <button @click="navigateTo(createRoute)">Secretaria</button>
       <button @click="navigateTo(indexRoute)">Psicologa</button>
     </div>
@@ -11,6 +12,7 @@
 <script>
 export default {
   props: {
+    clienteRoute: String,
     createRoute: String,
     indexRoute: String,
   },
