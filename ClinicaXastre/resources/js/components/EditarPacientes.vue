@@ -30,8 +30,7 @@
     },
     methods: {
       getEditRoute(id) {
-        
-        return `/psicologa/ler/editar/${id}`;
+        return `/psicologa/ficha/ler/editar/${id}`;
       }
     }
   };

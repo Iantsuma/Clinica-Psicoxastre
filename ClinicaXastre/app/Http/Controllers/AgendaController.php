@@ -23,6 +23,25 @@ class AgendaController extends Controller
       return view('agendar');
     }
 
+    public function info($sessao_id)
+    {
+        $agendamento = Agenda::find($sessao_id);
+        return view('info', ['agendamento' => $agendamento]);
+    }
+    
+    public function documento(string $id)
+    {
+        $agenda = $this->agenda->find($id);
+        return view('documento',['agenda'=>$agenda]);
+    }
+
+    public function editdoc(Request $request, string $id)
+    {
+      $updated = $this->agenda->where('id', $id)->update($request->except(['_token', '_method']));
+      return view('psicologa');
+
+    }
+
     public function store(Request $request)
     {
         $created = $this->agenda->create([
@@ -44,6 +63,36 @@ class AgendaController extends Controller
         $userId = auth()->id();
         $agenda = $this->agenda->where('user_id', $userId)->get();
         return view('historico', ['agenda' => $agenda]);
+    }
+
+    public function anunciar()
+    {
+        $agendamentos = $this->agenda->where('status', 'agendado')->get();
+        return view('anunciar', ['agenda' => $agendamentos]);
+    }
+
+    public function edit(string $id)
+    {
+        $updated = $this->agenda->where('id', $id)->update(['status' => 'em-espera']);
+        return view('secretaria');
+    }
+
+    public function concluir(string $id)
+    {
+        $updated = $this->agenda->where('id', $id)->update(['status' => 'concluida']);
+        return view('psicologa');
+    }
+
+    public function avisos()
+    {
+        $agenda = $this->agenda->where('status', 'em-espera')->get();
+        return view('avisos', ['agenda' => $agenda]);
+    }
+
+    public function sessoes()
+    {
+        $agenda = $this->agenda->where('status', 'concluida')->get();
+        return view('sessoes', ['agenda' => $agenda]);
     }
 
     public function read()

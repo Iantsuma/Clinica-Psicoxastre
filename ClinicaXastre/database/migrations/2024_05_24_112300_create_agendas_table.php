@@ -18,6 +18,8 @@ return new class extends Migration
             $table->text('descricao'); // Campo para a descrição
             $table->string('status'); // Campo para o status
             $table->timestamps();
+            $table->text('encaminhamentos')->nullable();
+            $table->text('atestados')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         
         });

@@ -1,9 +1,9 @@
 <template>
     <div class="container">
-      <h1 class="logo">Psicologa</h1>
+      <h1 class="logo">Secretaria</h1>
       <div class="buttons">
-        <button @click="navigateTo(avisosRoute)">Avisos</button>
-        <button @click="navigateTo(fichaRoute)">Fichas</button>
+        <button @click="navigateTo(createRoute)">Cadastrar Paciente</button>
+        <button @click="navigateTo(anunciarRoute)">Anunciar Chegada</button>
       </div>
     </div>
   </template>
@@ -11,8 +11,8 @@
   <script>
   export default {
     props: {
-      avisosRoute: String,
-      fichaRoute: String,
+      createRoute: String,
+      anunciarRoute: String,
     },
     methods: {
       navigateTo(url) {

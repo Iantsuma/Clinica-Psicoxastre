@@ -2,9 +2,9 @@
   <div class="container">
     <h1 class="logo">Clínica</h1>
     <div class="buttons">
-      <button @click="navigateTo(clienteRoute)">Cliente</button>
-      <button @click="navigateTo(createRoute)">Secretaria</button>
-      <button @click="navigateTo(indexRoute)">Psicologa</button>
+      <button v-if="userRole === 1" @click="navigateTo(clienteRoute)">Cliente</button>
+      <button v-if="userRole === 2" @click="navigateTo(secretariaRoute)">Secretaria</button>
+      <button v-if="userRole === 3" @click="navigateTo(indexRoute)">Psicologa</button>
     </div>
   </div>
 </template>
@@ -13,8 +13,12 @@
 export default {
   props: {
     clienteRoute: String,
-    createRoute: String,
+    secretariaRoute: String,
     indexRoute: String,
+    userRole: {
+      type: Number,
+      required: true
+    }
   },
   methods: {
     navigateTo(url) {

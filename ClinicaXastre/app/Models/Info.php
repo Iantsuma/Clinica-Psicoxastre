@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Agenda extends Model
+class Info extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'nome',
-        'user_id',
-        'descricao',
-        'status',
-        'encaminhamentos',
-        'atestados',
+        'sessao_id',
+        'data',
+        'hora_inicio',
+        'hora_fim',
+        'tema',
+        'avaliacao',
     ];
 }

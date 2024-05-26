@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index()
-    {
-        return view('home');
-    }
+
+public function index()
+{
+    $role = auth()->check() ? auth()->user()->role : null;
+    return view('home', ['role' => $role]);
+}
+
 }

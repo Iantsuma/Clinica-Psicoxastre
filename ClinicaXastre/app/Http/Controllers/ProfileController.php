@@ -24,6 +24,11 @@ class ProfileController extends Controller
       return view('psicologa');
     }
 
+    public function ficha()
+    {
+      return view('ficha');
+    }
+
     public function ler()
     {
       $user = $this->user->all();
@@ -35,9 +40,13 @@ class ProfileController extends Controller
       return view('cadastro');
     }
 
+    public function secretaria()
+    {
+      return view('secretaria');
+    }
+
     public function editar(string $id)
     {
-      
       $user = $this->user->find($id);
       return view('editar',['user'=>$user]);
     }
@@ -64,7 +73,15 @@ class ProfileController extends Controller
         'password' => $request->input('password'),
         'role' => 1,
       ]);
+
+      if ($created) {
+        return response()->json(['message' => 'Agendamento criado com sucesso!'], 201);
+    } else {
+        return response()->json(['message' => 'Erro ao criar agendamento'], 500);
     }
+
+    }
+
     public function edit(Request $request): View
     {
         return view('profile.edit', [
