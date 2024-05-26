@@ -2,9 +2,9 @@
   <div class="container">
     <h1 class="logo">Clínica</h1>
     <div class="buttons">
-      <button v-if="userRole === 1" @click="navigateTo(clienteRoute)">Cliente</button>
-      <button v-if="userRole === 2" @click="navigateTo(secretariaRoute)">Secretaria</button>
-      <button v-if="userRole === 3" @click="navigateTo(indexRoute)">Psicologa</button>
+      <button v-if="userRole === 1" @click="navigateTo(clienteRoute)" class="btn btn-um">Cliente</button>
+      <button v-if="userRole === 2" @click="navigateTo(secretariaRoute)" class="btn btn-um">Secretaria</button>
+      <button v-if="userRole === 3" @click="navigateTo(indexRoute)" class="btn btn-um">Psicologa</button>
     </div>
   </div>
 </template>
@@ -31,24 +31,49 @@ export default {
 <style scoped>
 .container {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 100px;
 }
 .logo {
-  color: #007BFF; /* Azul bonito */
-  font-size: 48px;
-  margin-bottom: 20px;
+  color: #ff6b6b; /* Coral color */
+  font-size: 64px;
+  font-weight: bold;
+  margin-bottom: 50px;
+  text-shadow: 2px 2px #ff8787;
+}
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .buttons button {
-  margin: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
+  margin: 15px;
+  padding: 15px 30px;
+  font-size: 18px;
   cursor: pointer;
-  background-color: #007BFF;
-  color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 50px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
-.buttons button:hover {
-  background-color: #0056b3;
+.btn-um {
+  background: linear-gradient(to right, #ff6b6b, #ff8787);
+  color: white;
+}
+.btn-um:hover {
+  background: linear-gradient(to right, #ff8787, #ff6b6b);
+}
+.btn-dois {
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+  color: white;
+}
+.btn-dois:hover {
+  background: linear-gradient(to right, #00f2fe, #4facfe);
+}
+.btn-tres {
+  background: linear-gradient(to right, #43e97b, #38f9d7);
+  color: white;
+}
+.btn-tres:hover {
+  background: linear-gradient(to right, #38f9d7, #43e97b);
 }
 </style>
