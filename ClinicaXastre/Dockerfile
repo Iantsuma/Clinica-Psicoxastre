@@ -1,52 +1,58 @@
-# Use uma imagem base oficial do PHP
-FROM php:8.2-fpm
+FROM php:8.3.6-apache
 
-# Defina o diretório de trabalho
-WORKDIR /var/www/html
-
-# Instale dependências de sistema necessárias
+# Instalar dependências do sistema
 RUN apt-get update && apt-get install -y \
-    build-essential \
+    git \
+    curl \
     libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
     libonig-dev \
-    libzip-dev \
+    libxml2-dev \
     zip \
     unzip \
-    git \
-    curl
+    nodejs \
+    npm \
+    iputils-ping \
+    dnsutils \
+    netcat-openbsd
 
-# Instale Node.js e npm
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt-get install -y nodejs
+# Limpar o cache do apt-get
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Instale extensões PHP necessárias
-RUN docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip
+# Instalar extensões do PHP
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# Instale Composer
-COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
+# Obter o Composer mais recente
+COPY --from=composer:2.7.6 /usr/bin/composer /usr/bin/composer
 
-# Copie o restante dos arquivos da aplicação
-COPY . /var/www/html
+# Copiar o código do Laravel para o diretório de trabalho do Apache
+COPY /laravel /var/www/html
 
-# Remova node_modules e package-lock.json se existirem
-RUN rm -rf node_modules package-lock.json
+# Copiar o script de entrada
+COPY init.sh /usr/local/bin/init.sh
 
-# Instale dependências do Composer
-RUN composer install
+# Garantir que o script de entrada tenha permissões de execução
+RUN chmod +x /usr/local/bin/init.sh
 
-# Instale dependências do NPM
-RUN npm install
+# Instalar dependências do Node.js
+RUN cd /var/www/html && npm install
 
-# Construa os assets do Vite
-RUN npm run build
+# Instalar dependências do Composer
+RUN cd /var/www/html && composer install
 
-# Dê permissão ao diretório de cache do Laravel
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Executar build do npm
+RUN cd /var/www/html && npm run build
 
-# Exponha a porta 9000 para o PHP-FPM
-EXPOSE 9000
+# Habilitar o mod_rewrite do Apache
+RUN a2enmod rewrite
 
-# Comando de inicialização do PHP-FPM
-CMD ["php-fpm"]
+# Definir permissões apropriadas para o diretório de armazenamento
+RUN chown -R www-data:www-data /var/www/html/storage/
+
+# Definir a diretiva ServerName globalmente para suprimir avisos de sintaxe
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# Expor a porta 80
+EXPOSE 80 3000
+
+# Definir o script de entrada a ser executado quando o contêiner iniciar
+CMD ["/usr/local/bin/init.sh"]
