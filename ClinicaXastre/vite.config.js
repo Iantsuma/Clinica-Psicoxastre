@@ -10,11 +10,16 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    resolve:{
-        alias:{
-            vue:'vue/dist/vue.esm-bundler.js'
+    server: {
+        host: '0.0.0.0', // Permite que o servidor seja acessível externamente
+        port: 3000,      // Define a porta padrão do Vite
+        hmr: {
+            host: 'localhost', // Host para o Hot Module Replacement
+        },
+    },
+    resolve: {
+        alias: {
+            vue: 'vue/dist/vue.esm-bundler.js'
         }
     }
 });
-
-
