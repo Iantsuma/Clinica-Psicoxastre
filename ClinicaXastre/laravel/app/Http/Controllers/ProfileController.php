@@ -31,7 +31,7 @@ class ProfileController extends Controller
 
     public function ler()
     {
-      $user = $this->user->all();
+      $user = $this->user->where('role', 1)->get();
       return view('lerpaciente', ['user' => $user]);
     }
 
@@ -75,9 +75,9 @@ class ProfileController extends Controller
       ]);
 
       if ($created) {
-        return response()->json(['message' => 'Agendamento criado com sucesso!'], 201);
+        return response()->json(['message' => 'Cliente criado com sucesso!'], 201);
     } else {
-        return response()->json(['message' => 'Erro ao criar agendamento'], 500);
+        return response()->json(['message' => 'Erro ao criar Cliente'], 500);
     }
 
     }
@@ -88,6 +88,14 @@ class ProfileController extends Controller
             'user' => $request->user(),
         ]);
     }
+
+    public function agendar()
+{
+    $role = 3; 
+    $psicologos = User::where('role', $role)->get();
+    return view('agendar', ['psicologos' => $psicologos]);
+}
+
 
     /**
      * Update the user's profile information.

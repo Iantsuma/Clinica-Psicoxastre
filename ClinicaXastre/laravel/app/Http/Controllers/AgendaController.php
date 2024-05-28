@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Agenda;
+use App\Models\User;
 
 class AgendaController extends Controller
 {
@@ -16,11 +17,6 @@ class AgendaController extends Controller
     
     public function index(){
         return view('cliente');
-    }
-
-    public function create()
-    {
-      return view('agendar');
     }
 
     public function info($sessao_id)
@@ -38,8 +34,7 @@ class AgendaController extends Controller
     public function editdoc(Request $request, string $id)
     {
       $updated = $this->agenda->where('id', $id)->update($request->except(['_token', '_method']));
-      return view('ficha');
-
+      return view('psicologa');
     }
 
     public function store(Request $request)
@@ -49,6 +44,7 @@ class AgendaController extends Controller
             'user_id' => $request->input('id_user'),
             'descricao' => $request->input('descricao'),
             'status' => $request->input('status'),
+            'psi_id' => $request->input('psi_id'),
         ]);
 
         if ($created) {
@@ -85,13 +81,15 @@ class AgendaController extends Controller
 
     public function avisos()
     {
-        $agenda = $this->agenda->where('status', 'em-espera')->get();
+        $id = auth()->user()->idpsi;
+        $agenda = $this->agenda->where('psi_id', $id)->where('status', 'em-espera')->get();
         return view('avisos', ['agenda' => $agenda]);
     }
 
     public function sessoes()
     {
-        $agenda = $this->agenda->where('status', 'concluida')->get();
+        $id = auth()->user()->idpsi;
+        $agenda = $this->agenda->where('psi_id', $id)->where('status', 'concluida')->get();
         return view('sessoes', ['agenda' => $agenda]);
     }
 

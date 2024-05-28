@@ -1,76 +1,145 @@
 <template>
+  <div class="full-page">
+    <div class="header">
+      <button @click="logOut" class="btn btn-danger">Logout</button>
+    </div>
     <div class="container">
-      <h1 class="logo">Psicologa</h1>
-      <div class="buttons">
-        <button @click="navigateTo(avisosRoute)" class="btn btn-um">Avisos</button>
-        <button @click="navigateTo(fichaRoute)" class="btn btn-dois">Fichas</button>
+      <div class="content">
+        <h1 class="logo">Psicologa</h1>
+        <div class="buttons">
+          <button @click="navigateTo(avisosRoute)" class="btn btn-primary">Avisos</button>
+          <button @click="navigateTo(fichaRoute)" class="btn btn-tertiary">Fichas</button>
+        </div>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    props: {
-      avisosRoute: String,
-      fichaRoute: String,
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    avisosRoute: String,
+    fichaRoute: String,
+  },
+  methods: {
+    navigateTo(url) {
+      window.location.href = url;
     },
-    methods: {
-      navigateTo(url) {
-        window.location.href = url;
-      }
+    logOut() {
+      window.location.href = '/logout';
     }
-  };
-  </script>
-  
+  }
+};
+</script>
+
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+
+.full-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #f0f0f0; /* fundo cinza */
+  font-family: 'Montserrat', sans-serif;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  padding: 5px 20px;
+  position: absolute;
+  top: 0;
+}
+
+.header button {
+  margin-right: 10px;
+}
+
 .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.content {
   text-align: center;
-  margin-top: 100px;
+  background: #fff;
+  padding: 50px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
 }
+
 .logo {
-  color: #ff6b6b; /* Coral color */
-  font-size: 64px;
-  font-weight: bold;
-  margin-bottom: 50px;
-  text-shadow: 2px 2px #ff8787;
+  color: #333;
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 40px;
 }
+
 .buttons {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 20px;
 }
+
 .buttons button {
-  margin: 15px;
   padding: 15px 30px;
   font-size: 18px;
   cursor: pointer;
   border: none;
-  border-radius: 50px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
   transition: all 0.3s ease;
 }
-.btn-um {
-  background: linear-gradient(to right, #ff6b6b, #ff8787);
+
+.btn-primary {
+  background-color: #007bff;
   color: white;
 }
-.btn-um:hover {
-  background: linear-gradient(to right, #ff8787, #ff6b6b);
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
 }
-.btn-dois {
-  background: linear-gradient(to right, #4facfe, #00f2fe);
+
+.btn-secondary {
+  background-color: #6c757d;
   color: white;
 }
-.btn-dois:hover {
-  background: linear-gradient(to right, #00f2fe, #4facfe);
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  transform: translateY(-3px);
 }
-.btn-tres {
-  background: linear-gradient(to right, #43e97b, #38f9d7);
+
+.btn-tertiary {
+  background-color: #28a745;
   color: white;
 }
-.btn-tres:hover {
-  background: linear-gradient(to right, #38f9d7, #43e97b);
+
+.btn-tertiary:hover {
+  background-color: #218838;
+  transform: translateY(-3px);
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
 }
 </style>
-
-
-  

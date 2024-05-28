@@ -1,30 +1,36 @@
 <template>
-  <div class="anunciar-container">
-    <h1 class="title">Sessões Concluidas</h1>
-    <div class="table-container">
-      <table class="agendamentos-table">
-        <thead>
-          <tr>
-            <th>Paciente</th>
-            <th>Descrição</th>
-            <th>Status</th>
-            <th>Data de Agendamento</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="agendamento in agendas" :key="agendamento.id">
-            <td><strong>{{ agendamento.nome }}</strong></td>
-            <td>{{ agendamento.descricao }}</td>
-            <td>{{ agendamento.status }}</td>
-            <td>{{ new Date(agendamento.created_at).toLocaleDateString() }}</td>
-            <td class="action-buttons">
-              <a :href="createRoute(agendamento.id)" class="btn btn-info">Info</a>
-              <a :href="editRoute(agendamento.id)" class="btn btn-secondary">Documentos</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="full-page">
+    <div class="header">
+      <button @click="goBack" class="btn btn-secondary">Voltar</button>
+      <button @click="logOut" class="btn btn-danger">Logout</button>
+    </div>
+    <div class="anunciar-container">
+      <h1 class="title">Sessões Concluídas</h1>
+      <div class="table-container">
+        <table class="agendamentos-table">
+          <thead>
+            <tr>
+              <th>Paciente</th>
+              <th>Descrição</th>
+              <th>Status</th>
+              <th>Data de Agendamento</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="agendamento in agendas" :key="agendamento.id">
+              <td><strong>{{ agendamento.nome }}</strong></td>
+              <td>{{ agendamento.descricao }}</td>
+              <td>{{ agendamento.status }}</td>
+              <td>{{ new Date(agendamento.created_at).toLocaleDateString() }}</td>
+              <td class="action-buttons">
+                <a :href="createRoute(agendamento.id)" class="btn btn-info">Info</a>
+                <a :href="editRoute(agendamento.id)" class="btn btn-secondary">Documentos</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -44,15 +50,45 @@ export default {
     },
     editRoute(agendamentoId) {
       return `/psicologa/ficha/sessoes/documentos/${agendamentoId}`;
+    },
+    goBack() {
+      window.location.href = '/psicologa/ficha';
+    },
+    logOut() {
+      window.location.href = '/logout';
     }
   }
 };
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+
+.full-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f0f0f0; /* fundo cinza */
+  font-family: 'Montserrat', sans-serif;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  padding: 5px 20px;
+  position: absolute;
+  top: 0;
+}
+
+.header button, .header nav {
+  margin-right: 10px;
+}
+
 .anunciar-container {
-  margin: 50px auto;
-  max-width: 1000px;
+  margin: 70px auto 0; /* Ajustado para adicionar espaço para o header */
+  width: 100%;
+  max-width: 800px; /* Largura máxima ajustada para ser 20% menor */
   padding: 20px;
   background-color: #f7f7f7;
   border-radius: 10px;
@@ -125,11 +161,47 @@ export default {
 }
 
 .btn-secondary {
-  background-color: #ffc107; /* Cor vibrante amarela */
+  background-color: #6c757d;
   color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-  background-color: #e0a800;
+  background-color: #5a6268;
+  transform: translateY(-3px);
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
 }
 </style>

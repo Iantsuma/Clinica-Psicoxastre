@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('numero')->nullable(); // Número de celular do paciente
             $table->string('email')->unique();
             $table->integer('role');
+            $table->integer('idpsi')->nullable()->index(); // Add an index to the idpsi column
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

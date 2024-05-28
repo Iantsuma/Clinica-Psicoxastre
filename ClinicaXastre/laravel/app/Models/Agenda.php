@@ -12,6 +12,7 @@ class Agenda extends Model
     protected $fillable = [
         'nome',
         'user_id',
+        'psi_id',
         'descricao',
         'status',
         'encaminhamentos',

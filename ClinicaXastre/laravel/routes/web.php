@@ -5,12 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\InfoController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
-Route::get('/home', [HomeController::class, 'home'])->name('home');
 
 Route::get('/cliente', [AgendaController::class, 'index'])->name('agenda.index');
-Route::get('/cliente/agendar', [AgendaController::class, 'create'])->name('agenda.create');
+Route::get('/cliente/agendar', [ProfileController::class, 'agendar'])->name('profile.agendar');
 Route::post('/cliente/agendar/sessao', [AgendaController::class, 'store'])->name('agenda.store');
 Route::get('/cliente/historico', [AgendaController::class, 'ler'])->name('agenda.ler');
 Route::get('/cliente/proximas', [AgendaController::class, 'read'])->name('agenda.read');
@@ -26,10 +26,8 @@ Route::get('/psicologa/ficha', [ProfileController::class, 'ficha'])->name('profi
 Route::get('/psicologa/ficha/sessoes', [AgendaController::class, 'sessoes'])->name('agenda.sessoes');
 Route::get('/psicologa/ficha/sessoes/info/{id}', [AgendaController::class, 'info'])->name('agenda.info');
 Route::post('/psicologa/ficha/sessoes/info/store', [InfoController::class, 'store'])->name('info.store');
-
 Route::get('/psicologa/ficha/sessoes/documentos/{id}', [AgendaController::class, 'documento'])->name('agenda.documento');
 Route::put('/psicologa/ficha/sessoes/documentos/{id}/alterar', [AgendaController::class, 'editdoc'])->name('agenda.editdoc');
-
 Route::get('/psicologa/avisos', [AgendaController::class, 'avisos'])->name('agenda.avisos');
 Route::get('/psicologa/avisos/{id}', [AgendaController::class, 'concluir'])->name('agenda.concluir');
 Route::get('/psicologa/ficha/ler', [ProfileController::class, 'ler'])->name('profile.ler');
@@ -41,5 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/logout',[AuthenticatedSessionController::class, 'destroy'])->name('AuthenticatedSession.destroy');
+Route::get('/login',[AuthenticatedSessionController::class, 'create'])->name('AuthenticatedSession.create');
 
 require __DIR__.'/auth.php';

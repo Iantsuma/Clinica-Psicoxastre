@@ -1,6 +1,6 @@
 import './bootstrap';
 import { createApp } from 'vue';
-import Paginicial from './components/Paginicial.vue';
+import Landpage from './components/Landpage.vue';
 import CadastroPaciente from './components/CadastroPaciente.vue';
 import Psicologa from './components/Psicologa.vue';
 import EditarPacientes from './components/EditarPacientes.vue';
@@ -15,13 +15,12 @@ import Ficha from './components/Ficha.vue';
 import Sessoes from './components/Sessoes.vue';
 import Info from './components/Info.vue';
 import Documento from './components/Documento.vue';
-import Landpage from './components/Landpage.vue';
 
 
 
 const app = createApp();
 
-app.component('paginicial', Paginicial);
+app.component('land-page', Landpage);
 app.component('cadastro-paciente', CadastroPaciente);
 app.component('psicologa', Psicologa);
 app.component('editar-pacientes', EditarPacientes);
@@ -36,7 +35,6 @@ app.component('ficha', Ficha);
 app.component('sessoes', Sessoes);
 app.component('info', Info);
 app.component('documento', Documento);
-app.component('land-page', Landpage);
 
 app.mount('#app');
 

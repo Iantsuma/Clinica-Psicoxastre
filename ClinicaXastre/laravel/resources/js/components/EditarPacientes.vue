@@ -1,23 +1,29 @@
 <template>
-  <div class="users-list-container">
-    <h1 class="title">Lista de Usuários</h1>
-    <div class="table-container">
-      <table class="users-table">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="user in filteredUsers" :key="user.id">
-            <td><strong>{{ user.nome }}</strong></td>
-            <td>
-              <a :href="getEditRoute(user.id)" class="btn btn-primary">Editar</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="full-page">
+    <div class="header">
+      <button @click="goBack" class="btn btn-secondary">Voltar</button>
+      <button @click="logOut" class="btn btn-danger">Logout</button>
+    </div>
+    <div class="users-list-container">
+      <h1 class="title">Lista de Usuários</h1>
+      <div class="table-container">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="user in users" :key="user.id">
+              <td><strong>{{ user.nome }}</strong></td>
+              <td>
+                <a :href="getEditRoute(user.id)" class="btn btn-primary">Editar</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -31,23 +37,48 @@ export default {
       required: true
     }
   },
-  computed: {
-    filteredUsers() {
-      return this.users.filter(user => user.role === 1);
-    }
-  },
   methods: {
     getEditRoute(id) {
       return `/psicologa/ficha/ler/editar/${id}`;
+    },
+    goBack() {
+      window.location.href = '/psicologa/ficha';
+    },
+    logOut() {
+      window.location.href = '/logout';
     }
   }
 };
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+
+.full-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f0f0f0; /* fundo cinza */
+  font-family: 'Montserrat', sans-serif;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  padding: 5px 20px;
+  position: absolute;
+  top: 0;
+}
+
+.header button, .header nav {
+  margin-right: 10px;
+}
+
 .users-list-container {
-  margin: 50px auto;
-  max-width: 800px;
+  margin: 70px auto 0; /* Ajustado para adicionar espaço para o header */
+  width: 100%;
+  max-width: 800px; /* Largura máxima ajustada para ser 20% menor */
   padding: 20px;
   background-color: #f7f7f7;
   border-radius: 10px;
@@ -107,5 +138,37 @@ export default {
 
 .btn-primary:hover {
   background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
 }
 </style>
