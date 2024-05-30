@@ -25,17 +25,21 @@ class AgendaController extends Controller
         return view('info', ['agendamento' => $agendamento]);
     }
     
-    public function documento(string $id)
+    public function documento()
     {
-        $agenda = $this->agenda->find($id);
-        return view('documento',['agenda'=>$agenda]);
+        return view('documento');
     }
 
     public function editdoc(Request $request, string $id)
     {
-      $updated = $this->agenda->where('id', $id)->update($request->except(['_token', '_method']));
-      return view('psicologa');
+        // Atualizar apenas o campo 'encaminhamentos'
+        $updated = $this->agenda->where('id', $id)->update(['encaminhamentos' => $request->input('encaminhamentos')]);
+    
+        // Redirecionar para a rota /encaminhamento/{id} para gerar o PDF
+        return redirect()->route('encaminhamento', ['id' => $id]);
     }
+    
+
 
     public function store(Request $request)
     {
@@ -57,15 +61,22 @@ class AgendaController extends Controller
     public function ler()
     {
         $userId = auth()->id();
-        $agenda = $this->agenda->where('user_id', $userId)->get();
+        $agenda = $this->agenda->where('user_id', $userId)
+                        ->join('users', 'agendas.psi_id', '=', 'users.id')
+                        ->select('agendas.*', 'users.nome as psi_nome')
+                        ->get();
         return view('historico', ['agenda' => $agenda]);
     }
 
     public function anunciar()
     {
-        $agendamentos = $this->agenda->where('status', 'agendado')->get();
+        $agendamentos = $this->agenda->where('status', 'agendado')
+                              ->join('users', 'agendas.psi_id', '=', 'users.idpsi')
+                              ->select('agendas.*', 'users.nome as psi_nome')
+                              ->get();
         return view('anunciar', ['agenda' => $agendamentos]);
     }
+
 
     public function edit(string $id)
     {
@@ -97,9 +108,11 @@ class AgendaController extends Controller
     {
         $userId = auth()->id();
         $agenda = $this->agenda->where('user_id', $userId)
-                                ->whereIn('status', ['agendado', 'em-espera'])
-                                ->get();
-                                
+                        ->whereIn('status', ['agendado', 'em-espera'])
+                        ->join('users', 'agendas.psi_id', '=', 'users.id')
+                        ->select('agendas.*', 'users.nome as psi_nome')
+                        ->get();
         return view('historico', ['agenda' => $agenda]);
     }
 }
+

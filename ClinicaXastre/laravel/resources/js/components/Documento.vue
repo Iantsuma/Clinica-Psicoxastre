@@ -6,15 +6,11 @@
     </div>
     <div class="container">
       <div class="form-container">
-        <h1 class="logo">Encaminhamento de Documentos</h1>
-        <form @submit.prevent="submitForm" class="form-stylish">
+        <h1 class="logo">Encaminhamentos</h1>
+        <form @submit.prevent="generatePDF" class="form-stylish">
           <div class="mb-3">
-            <label for="encaminhamentos" class="form-label">Encaminhamentos</label>
-            <input type="text" id="encaminhamentos" class="form-control" v-model="form.encaminhamentos" placeholder="Encaminhamento">
-          </div>
-          <div class="mb-3">
-            <label for="atestados" class="form-label">Atestados</label>
-            <input type="text" id="atestados" class="form-control" v-model="form.atestados" placeholder="Atestado">
+            <label for="text" class="form-label">Texto do Encaminhamento</label>
+            <input type="text" id="text" class="form-control" v-model="text" placeholder="Texto do Encaminhamento" required>
           </div>
           <div class="form-group">
             <input type="submit" class="btn btn-primary" value="Encaminhar">
@@ -27,43 +23,49 @@
 
 <script>
 export default {
-  props: {
-    editdocRoute: {
-      type: String,
-      required: true
-    },
-    agenda: {
-      type: Object,
-      required: true
-    }
-  },
   data() {
     return {
-      form: {
-        encaminhamentos: this.agenda.encaminhamentos || '',
-        atestados: this.agenda.atestados || ''
-      }
+      text: '',
+      showModal: false
     };
   },
   methods: {
-    submitForm() {
-      fetch(this.editdocRoute, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify(this.form)
-      })
-      .then(() => {
-        window.location.href = '/psicologa/ficha/sessoes'; // ou o caminho correto da sua rota home
-      })
-      .catch(error => {
-        console.error('Erro ao submeter o formulário:', error);
+    async generatePDF() {
+      const formData = new FormData();
+      formData.append('text', this.text);
+
+      try {
+        const response = await fetch('/encaminhamento', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const blob = await response.blob();
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'encaminhamento_medico.pdf';
+        link.click();
+        this.showModal = true;
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+      }
+    },
+    closeModal() {
+      this.showModal = false;
+      this.$nextTick(() => {
+        document.getElementById('text').focus();
       });
     },
     goBack() {
-      window.location.href = '/psicologa/ficha/sessoes';
+      window.history.back();
     },
     logOut() {
       window.location.href = '/logout';
@@ -195,5 +197,37 @@ export default {
 .btn-danger:hover {
   background-color: #c82333;
   transform: translateY(-2px);
+}
+
+/* Custom modal styles */
+.custom-modal {
+  position: fixed;
+  z-index: 1050;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 18px;
+  cursor: pointer;
 }
 </style>

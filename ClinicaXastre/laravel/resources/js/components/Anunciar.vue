@@ -11,6 +11,7 @@
           <thead>
             <tr>
               <th>Cliente</th>
+              <th>Psicólogo</th>
               <th>Descrição</th>
               <th>Status</th>
               <th>Data de Agendamento</th>
@@ -19,11 +20,12 @@
           </thead>
           <tbody>
             <tr v-for="agendamento in agendas" :key="agendamento.id">
-              <td>{{ agendamento.nome }}</td>
-              <td>{{ agendamento.descricao }}</td>
-              <td>{{ agendamento.status }}</td>
-              <td>{{ new Date(agendamento.created_at).toLocaleDateString() }}</td>
-              <td>
+              <td><strong>{{ agendamento.nome }}</strong></td>
+              <td><strong>{{ agendamento.psi_nome }}</strong></td>
+              <td><strong>{{ agendamento.descricao }}</strong></td>
+              <td><strong>{{ agendamento.status }}</strong></td>
+              <td><strong>{{ new Date(agendamento.created_at).toLocaleDateString() }}</strong></td>
+              <td class="actions-cell">
                 <a :href="editRoute(agendamento.id)" class="btn btn-primary">Anunciar Chegada</a>
               </td>
             </tr>
@@ -83,7 +85,7 @@ export default {
 
 .announcement-container {
   margin: 50px auto;
-  max-width: 800px;
+  max-width: 1000px; /* Ajustado para um máximo de largura maior */
   padding: 20px;
   background-color: #f7f7f7;
   border-radius: 10px;
@@ -91,7 +93,7 @@ export default {
 }
 
 .title {
-  font-size: 32px;
+  font-size: 36px; /* Aumentar o tamanho da fonte do título */
   color: #333;
   text-align: center;
   margin-bottom: 20px;
@@ -110,14 +112,16 @@ export default {
 
 .announcement-table th,
 .announcement-table td {
-  padding: 12px 15px;
+  padding: 16px 20px; /* Ajustado para maior espaçamento */
   text-align: left;
   border-bottom: 1px solid #ddd;
+  white-space: nowrap; /* Evitar quebras de linha nas células */
 }
 
 .announcement-table th {
   background-color: #007bff;
   color: white;
+  font-size: 18px; /* Aumentar o tamanho da fonte dos cabeçalhos */
 }
 
 .announcement-table tbody tr:nth-child(even) {
@@ -128,6 +132,14 @@ export default {
   background-color: #ddd;
 }
 
+.announcement-table td {
+  font-size: 16px; /* Ajustar o tamanho da fonte das células */
+}
+
+.actions-cell {
+  padding-right: 20px; /* Adicionar padding à célula de ações */
+}
+
 .btn-primary {
   background-color: #007bff;
   color: white;
@@ -135,6 +147,7 @@ export default {
   text-decoration: none;
   border-radius: 5px;
   transition: background-color 0.3s;
+  margin-right: 20px; /* Adicionar margem direita ao botão */
 }
 
 .btn-primary:hover {
@@ -147,7 +160,7 @@ export default {
   border: none;
   border-radius: 8px;
   padding: 10px 15px;
-  font-size: 14px;
+  font-size: 16px; /* Aumentar o tamanho da fonte dos botões */
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -163,7 +176,7 @@ export default {
   border: none;
   border-radius: 8px;
   padding: 10px 15px;
-  font-size: 14px;
+  font-size: 16px; /* Aumentar o tamanho da fonte dos botões */
   cursor: pointer;
   transition: all 0.3s ease;
 }

@@ -19,13 +19,13 @@
           </thead>
           <tbody>
             <tr v-for="agendamento in agendas" :key="agendamento.id">
-              <td>{{ agendamento.nome }}</td>
-              <td>{{ agendamento.descricao }}</td>
-              <td>{{ agendamento.status }}</td>
-              <td>{{ new Date(agendamento.created_at).toLocaleDateString() }}</td>
-              <td>
+              <td><strong>{{ agendamento.nome }}</strong></td>
+              <td><strong>{{ agendamento.descricao }}</strong></td>
+              <td><strong>{{ agendamento.status }}</strong></td>
+              <td><strong>{{ new Date(agendamento.created_at).toLocaleDateString() }}</strong></td>
+              <td><strong>
                 <a :href="editRoute(agendamento.id)" class="btn btn-success">Concluir Sessão</a>
-              </td>
+              </strong></td>
             </tr>
           </tbody>
         </table>

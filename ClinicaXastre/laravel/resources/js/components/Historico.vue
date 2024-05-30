@@ -5,12 +5,13 @@
       <button @click="logOut" class="btn btn-danger">Logout</button>
     </div>
     <div class="history-container">
-      <h1 class="title">Histórico de Agendamentos</h1>
+      <h1 class="title">Agendamentos</h1>
       <div class="table-container">
         <table class="history-table">
           <thead>
             <tr>
               <th>Cliente</th>
+              <th>Psicólogo</th>
               <th>Descrição</th>
               <th>Status</th>
               <th>Data de Agendamento</th>
@@ -18,10 +19,11 @@
           </thead>
           <tbody>
             <tr v-for="agendamento in agendas" :key="agendamento.id">
-              <td>{{ agendamento.nome }}</td>
-              <td>{{ agendamento.descricao }}</td>
-              <td>{{ agendamento.status }}</td>
-              <td>{{ new Date(agendamento.created_at).toLocaleDateString() }}</td>
+              <td><strong>{{ agendamento.nome }}</strong></td>
+              <td><strong>{{ agendamento.psi_nome }}</strong></td>
+              <td><strong>{{ agendamento.descricao }}</strong></td>
+              <td><strong>{{ agendamento.status }}</strong></td>
+              <td><strong>{{ new Date(agendamento.created_at).toLocaleDateString() }}</strong></td> <!-- Exibir nome do psicólogo -->
             </tr>
           </tbody>
         </table>

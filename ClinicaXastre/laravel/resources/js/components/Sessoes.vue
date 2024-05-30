@@ -20,12 +20,15 @@
           <tbody>
             <tr v-for="agendamento in agendas" :key="agendamento.id">
               <td><strong>{{ agendamento.nome }}</strong></td>
-              <td>{{ agendamento.descricao }}</td>
-              <td>{{ agendamento.status }}</td>
-              <td>{{ new Date(agendamento.created_at).toLocaleDateString() }}</td>
+              <td><strong>{{ agendamento.descricao }}</strong></td>
+              <td><strong>{{ agendamento.status }}</strong></td>
+              <td><strong>{{ new Date(agendamento.created_at).toLocaleDateString() }}</strong></td>
               <td class="action-buttons">
-                <a :href="createRoute(agendamento.id)" class="btn btn-info">Info</a>
-                <a :href="editRoute(agendamento.id)" class="btn btn-secondary">Documentos</a>
+                <div class="button-row">
+                  <a :href="createRoute(agendamento.id)" class="btn btn-info">Info</a>
+                  <button @click="gerarDoc(agendamento.user_id)" class="btn btn-danger">Atestado</button>
+                </div>
+                <a :href="editRoute()" class="btn btn-secondary">Encaminhamentos</a>
               </td>
             </tr>
           </tbody>
@@ -48,14 +51,18 @@ export default {
     createRoute(agendamentoId) {
       return `/psicologa/ficha/sessoes/info/${agendamentoId}`;
     },
-    editRoute(agendamentoId) {
-      return `/psicologa/ficha/sessoes/documentos/${agendamentoId}`;
+    editRoute() {
+      return `/psicologa/ficha/sessoes/documentos`;
     },
     goBack() {
       window.location.href = '/psicologa/ficha';
     },
     logOut() {
       window.location.href = '/logout';
+    },
+    gerarDoc(agendamentoId) {
+      const userId = agendamentoId;
+      window.location.href = `/document/${userId}`;
     }
   }
 };
@@ -137,23 +144,41 @@ export default {
   font-weight: bold;
 }
 
-.action-buttons a {
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-row {
+  display: flex;
+  margin-bottom: 5px; /* Add this line to add spacing between rows */
+}
+
+.action-buttons a,
+.action-buttons button {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 10px 15px; /* Ajuste de padding para combinar com os outros botões */
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: 8px; /* Ajuste de borda para combinar com os outros botões */
   transition: background-color 0.3s;
   margin-right: 10px;
   margin-bottom: 5px; /* Add this line to add spacing between rows */
 }
 
-.action-buttons a:last-child {
+.action-buttons a:last-child,
+.action-buttons button:last-child {
   margin-right: 0; /* Remove margin from the last button */
 }
 
 .btn-info {
   background-color: #28a745; /* Cor vibrante verde */
   color: white;
+  border: none; /* Remover borda */
+  border-radius: 8px; /* Ajuste de borda para combinar com os outros botões */
+  padding: 10px 15px; /* Ajuste de padding para combinar com os outros botões */
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .btn-info:hover {
@@ -168,12 +193,11 @@ export default {
   padding: 10px 15px;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .btn-secondary:hover {
   background-color: #5a6268;
-  transform: translateY(-3px);
 }
 
 .btn-primary {
@@ -197,11 +221,15 @@ export default {
   padding: 10px 15px;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .btn-danger:hover {
   background-color: #c82333;
-  transform: translateY(-2px);
+}
+
+.header .btn-secondary:hover, 
+.header .btn-danger:hover {
+  transform: translateY(-3px); /* Adicionar transformação de salto apenas para os botões de Voltar e Logout */
 }
 </style>

@@ -26,6 +26,15 @@
         </form>
       </div>
     </div>
+
+    <!-- Custom Modal -->
+    <div v-if="showModal" class="custom-modal">
+      <div class="custom-modal-content">
+        <span class="close-button" @click="closeModal">&times;</span>
+        <p>Agendamento criado com sucesso!</p>
+        <button @click="redirectToCliente" class="btn btn-primary">OK</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -57,7 +66,8 @@ export default {
         psi_id: '',
         status: 'agendado',
         descricao: ''
-      }
+      },
+      showModal: false
     };
   },
   methods: {
@@ -73,13 +83,18 @@ export default {
         .then(response => response.json())
         .then(data => {
           if (data.message) {
-            alert(data.message);
+            this.showModal = true;
           }
-          window.location.href = '/cliente';
         })
         .catch(error => {
           console.error('Erro ao submeter o formulário:', error);
         });
+    },
+    closeModal() {
+      this.showModal = false;
+      this.$nextTick(() => {
+        document.getElementById('descricao').focus();
+      });
     },
     goBack() {
       window.history.back();
@@ -87,7 +102,7 @@ export default {
     logOut() {
       window.location.href = '/logout';
     },
-    goBack(){
+    redirectToCliente() {
       window.location.href = '/cliente';
     }
   }
@@ -217,5 +232,37 @@ export default {
 .btn-danger:hover {
   background-color: #c82333;
   transform: translateY(-2px);
+}
+
+/* Custom modal styles */
+.custom-modal {
+  position: fixed;
+  z-index: 1050;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 18px;
+  cursor: pointer;
 }
 </style>

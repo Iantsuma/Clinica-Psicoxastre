@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\User;
+use App\Models\Agenda;
 
 class ProfileController extends Controller
 {
@@ -21,7 +22,9 @@ class ProfileController extends Controller
 
     public function index()
     {
+      
       return view('psicologa');
+      
     }
 
     public function ficha()
@@ -53,9 +56,16 @@ class ProfileController extends Controller
 
     public function alterar(Request $request, string $id)
     {
-      $updated = $this->user->where('id', $id)->update($request->except(['_token', '_method']));
-      return view('psicologa');
-
+        $user = $this->user->find($id);
+        if ($user) {
+            $updated = $user->update($request->except(['_token', '_method']));
+            if ($updated) {
+                // Atualiza o nome na tabela de agendas
+                Agenda::where('user_id', $id)->update(['nome' => $request->input('nome')]);
+                return view('psicologa');
+            }
+        }
+        return view('psicologa')->withErrors(['Erro ao atualizar os dados do usuário.']);
     }
     
 

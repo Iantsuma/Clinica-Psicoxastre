@@ -93,4 +93,9 @@ export default {
 
 <style scoped>
 /* Adicione estilos adicionais aqui, se necessário */
+
+.logout-button {
+    bottom: 20px;
+    right: 20px;
+}
 </style>
