@@ -41,10 +41,12 @@ docker swarm leave --force
 # Dados cadastrais psicologa e secretaria
 Secretaria:
 - secretaria@secretaria.com
+- 
 Psicologa:
 - joana@psicologa.com
 - catarina@psicologa.com
 - rudiger@psicologa.com
+  
 OBS: todas as senhas são 12345678
 
 
