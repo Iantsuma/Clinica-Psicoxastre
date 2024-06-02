@@ -41,7 +41,7 @@ docker swarm leave --force
 # Dados cadastrais psicologa e secretaria
 Secretaria:
 - secretaria@secretaria.com
-- 
+  
 Psicologa:
 - joana@psicologa.com
 - catarina@psicologa.com
