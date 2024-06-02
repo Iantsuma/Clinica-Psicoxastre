@@ -4,17 +4,19 @@ Você pode baixar o arquivo zipado da branch "main" ou clonar o repositório na 
 ```
 git clone https://github.com/Iantsuma/Clinica-Psicoxastre.git
 ```
-# Passo 2: Inicializar o Docker Swarm
+# Passo 2: Navegue até a pasta ClinicaXastre pelo Vscode
+
+# Passo 3: Inicializar o Docker Swarm
 Para inicializar um novo Swarm no nó atual, execute o seguinte comando:
 ```
 docker swarm init
 ```
-# Passo 3: Construir a Imagem Docker
+# Passo 4: Construir a Imagem Docker
 Para criar a imagem a partir do Dockerfile, utilize o comando:
 ```
 docker build -t myapp_php .
 ```
-# Passo 4: Deploy da Stack
+# Passo 5: Deploy da Stack
 Para finalizar a criação dos containers e utilizar o Swarm, execute o comando:
 ```
 docker stack deploy -c docker-compose.yml myapp
