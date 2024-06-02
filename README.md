@@ -16,8 +16,9 @@ Para finalizar a criação dos containers e utilizar o Swarm, execute o comando:
 - docker stack deploy -c docker-compose.yml myapp
 
 # ElectronJS
-Caso deseje executar o programa pelo app executável electrojs, entre na pasta laravel:
+Caso deseje executar o programa pelo app executável electronjs, entre na pasta laravel:
 - cd laravel
+  ```
 E após isso e com os containers executando, execute o seguinte comando:
 - npm start
 
