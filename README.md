@@ -1,7 +1,9 @@
 # Instruções de Configuração
 # Passo 1: Baixar o Projeto
 Você pode baixar o arquivo zipado da branch "main" ou clonar o repositório na pasta desejada com o seguinte comando:
+```
 - git clone https://github.com/Iantsuma/Clinica-Psicoxastre.git
+```
 # Passo 2: Inicializar o Docker Swarm
 Para inicializar um novo Swarm no nó atual, execute o seguinte comando:
 - docker swarm init
