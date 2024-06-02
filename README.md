@@ -15,7 +15,7 @@ Para criar a imagem a partir do Dockerfile, utilize o comando:
 Para finalizar a criação dos containers e utilizar o Swarm, execute o comando:
 - docker stack deploy -c docker-compose.yml myapp
 
-# ElectroJS
+# ElectronJS
 Caso deseje executar o programa pelo app executável electrojs, entre na pasta laravel:
 - cd laravel
 E após isso e com os containers executando, execute o seguinte comando:
