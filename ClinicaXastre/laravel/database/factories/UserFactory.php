@@ -1,44 +1,81 @@
 <?php
+// database/factories/UserFactory.php
 
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
+    protected $model = \App\Models\User::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    public function definition()
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'nome' => $this->faker->name,
+            'cep' => $this->faker->postcode,
+            'rua' => $this->faker->streetAddress,
+            'bairro' => $this->faker->city,
+            'cidade' => $this->faker->city,
+            'estado' => $this->faker->state,
+            'numero' => $this->faker->phoneNumber,
+            'email' => $this->faker->unique()->safeEmail,
+            'role' => $this->faker->randomElement([1, 2, 3]),
+            'idpsi' => $this->faker->boolean ? $this->faker->unique()->numberBetween(1, 100) : null,
+            'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
         ];
     }
+}
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
+// database/factories/AgendaFactory.php
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class AgendaFactory extends Factory
+{
+    protected $model = \App\Models\Agenda::class;
+
+    public function definition()
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
+        $user = \App\Models\User::factory()->create();
+        $psi = \App\Models\User::factory()->create(['idpsi' => $this->faker->unique()->numberBetween(1, 100)]);
+
+        return [
+            'nome' => $this->faker->word,
+            'user_id' => $user->id,
+            'psi_id' => $psi->idpsi,
+            'descricao' => $this->faker->paragraph,
+            'status' => 'pending',
+        ];
     }
 }
+
+// database/factories/InfoFactory.php
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class InfoFactory extends Factory
+{
+    protected $model = \App\Models\Info::class;
+
+    public function definition()
+    {
+        $agenda = \App\Models\Agenda::factory()->create();
+
+        return [
+            'sessao_id' => $agenda->id,
+            'data' => $this->faker->date,
+            'hora_inicio' => $this->faker->time,
+            'hora_fim' => $this->faker->time,
+            'tema' => $this->faker->sentence,
+            'avaliacao' => $this->faker->sentence,
+        ];
+    }
+}
+

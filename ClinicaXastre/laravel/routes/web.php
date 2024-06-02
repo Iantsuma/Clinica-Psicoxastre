@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -190,8 +191,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::delete('/agendamentos/{id}', [AgendaController::class, 'destroy'])->name('agenda.destroy');
+Route::delete('/users/{id}', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
 
 Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('AuthenticatedSession.destroy');
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('AuthenticatedSession.create');
+
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 require __DIR__.'/auth.php';

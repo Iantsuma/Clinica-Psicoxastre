@@ -30,6 +30,24 @@
         </form>
       </div>
     </div>
+
+    <!-- Custom Modal for Success -->
+    <div v-if="showSuccessModal" class="custom-modal">
+      <div class="custom-modal-content">
+        <span class="close-button" @click="closeSuccessModal">&times;</span>
+        <p>Informações inseridas com sucesso.</p>
+        <button @click="redirectToPsicologa" class="btn btn-primary">OK</button>
+      </div>
+    </div>
+
+    <!-- Custom Modal for Error -->
+    <div v-if="showErrorModal" class="custom-modal">
+      <div class="custom-modal-content">
+        <span class="close-button" @click="closeErrorModal">&times;</span>
+        <p>{{ errorMessage }}</p>
+        <button @click="closeErrorModal" class="btn btn-primary">OK</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -54,43 +72,52 @@ export default {
         hora_fim: '',
         tema: '',
         avaliacao: ''
-      }
+      },
+      showSuccessModal: false,
+      showErrorModal: false,
+      errorMessage: ''
     };
   },
   methods: {
-    submitForm() {
-      fetch(this.storeRoute, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify(this.form)
-      })
-      .then(response => {
+    async submitForm() {
+      try {
+        const response = await fetch(this.storeRoute, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify(this.form)
+        });
+
         if (!response.ok) {
-          throw new Error(`Erro: ${response.status} ${response.statusText}`);
+          const errorData = await response.json();
+          this.errorMessage = errorData.message || 'Erro ao inserir informações.';
+          this.showErrorModal = true;
+          return;
         }
-        return response.json();
-      })
-      .then(data => {
-        if (data.message) {
-          alert(data.message);
-        } else {
-          alert('Informações inseridas com sucesso.');
-          this.$router.push('/');
-        }
-      })
-      .catch(error => {
-        console.error('Erro ao submeter o formulário:', error);
-        alert('Você já inseriu informações nesta sessão!');
-      });
+
+        this.showSuccessModal = true;
+      } catch (error) {
+        this.errorMessage = 'Você já inseriu informações nessa sessão';
+        this.showErrorModal = true;
+      }
+    },
+    closeSuccessModal() {
+      this.showSuccessModal = false;
+      window.location.href = '/psicologa/ficha/sessoes';
+    },
+    closeErrorModal() {
+      this.showErrorModal = false;
     },
     goBack() {
       window.location.href = '/psicologa/ficha/sessoes';
     },
     logOut() {
       window.location.href = '/logout';
+    },
+    redirectToPsicologa(){
+      window.location.href = '/psicologa/ficha/sessoes';
     }
   }
 };
@@ -219,5 +246,37 @@ export default {
 .btn-danger:hover {
   background-color: #c82333;
   transform: translateY(-2px);
+}
+
+/* Custom modal styles */
+.custom-modal {
+  position: fixed;
+  z-index: 1050;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 18px;
+  cursor: pointer;
 }
 </style>

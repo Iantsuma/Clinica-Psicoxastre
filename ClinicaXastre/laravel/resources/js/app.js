@@ -15,6 +15,7 @@ import Ficha from './components/Ficha.vue';
 import Sessoes from './components/Sessoes.vue';
 import Info from './components/Info.vue';
 import Documento from './components/Documento.vue';
+import Proximos from './components/Proximos.vue';
 
 
 
@@ -35,6 +36,7 @@ app.component('ficha', Ficha);
 app.component('sessoes', Sessoes);
 app.component('info', Info);
 app.component('documento', Documento);
+app.component('proximos', Proximos);
 
 app.mount('#app');
 

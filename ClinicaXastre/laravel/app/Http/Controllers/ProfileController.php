@@ -32,6 +32,18 @@ class ProfileController extends Controller
       return view('ficha');
     }
 
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        
+        if ($user) {
+            $user->delete();
+            return response()->json(['message' => 'Usuário excluído com sucesso!'], 200);
+        } else {
+            return response()->json(['message' => 'Usuário não encontrado'], 404);
+        }
+    }
+
     public function ler()
     {
       $user = $this->user->where('role', 1)->get();
@@ -126,21 +138,5 @@ class ProfileController extends Controller
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
-
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
-    }
+    
 }

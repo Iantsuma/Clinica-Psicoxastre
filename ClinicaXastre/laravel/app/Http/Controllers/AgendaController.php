@@ -62,7 +62,7 @@ class AgendaController extends Controller
     {
         $userId = auth()->id();
         $agenda = $this->agenda->where('user_id', $userId)
-                        ->join('users', 'agendas.psi_id', '=', 'users.id')
+                        ->join('users', 'agendas.psi_id', '=', 'users.idpsi')
                         ->select('agendas.*', 'users.nome as psi_nome')
                         ->get();
         return view('historico', ['agenda' => $agenda]);
@@ -104,15 +104,27 @@ class AgendaController extends Controller
         return view('sessoes', ['agenda' => $agenda]);
     }
 
+    public function destroy($id)
+    {
+        $agendamento = Agenda::find($id);
+        
+        if ($agendamento) {
+            $agendamento->delete();
+            return response()->json(['message' => 'Agendamento deletado com sucesso!'], 200);
+        } else {
+            return response()->json(['message' => 'Agendamento não encontrado'], 404);
+        }
+    }
+    
     public function read()
     {
         $userId = auth()->id();
         $agenda = $this->agenda->where('user_id', $userId)
                         ->whereIn('status', ['agendado', 'em-espera'])
-                        ->join('users', 'agendas.psi_id', '=', 'users.id')
+                        ->join('users', 'agendas.psi_id', '=', 'users.idpsi')
                         ->select('agendas.*', 'users.nome as psi_nome')
                         ->get();
-        return view('historico', ['agenda' => $agenda]);
+        return view('proximos', ['agenda' => $agenda]);
     }
 }
 

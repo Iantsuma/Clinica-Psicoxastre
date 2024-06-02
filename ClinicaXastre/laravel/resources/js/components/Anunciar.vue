@@ -85,7 +85,8 @@ export default {
 
 .announcement-container {
   margin: 50px auto;
-  max-width: 1000px; /* Ajustado para um máximo de largura maior */
+  width: 90%; /* Ajustar a largura para ocupar 90% da tela */
+  max-width: 1200px; /* Ajustar o máximo de largura */
   padding: 20px;
   background-color: #f7f7f7;
   border-radius: 10px;
@@ -137,7 +138,7 @@ export default {
 }
 
 .actions-cell {
-  padding-right: 20px; /* Adicionar padding à célula de ações */
+  padding-right: 5px; /* Reduzir o padding à célula de ações */
 }
 
 .btn-primary {
@@ -147,7 +148,7 @@ export default {
   text-decoration: none;
   border-radius: 5px;
   transition: background-color 0.3s;
-  margin-right: 20px; /* Adicionar margem direita ao botão */
+  margin-right: 5px; /* Reduzir margem direita ao botão */
 }
 
 .btn-primary:hover {

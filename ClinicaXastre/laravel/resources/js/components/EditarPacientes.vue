@@ -18,11 +18,31 @@
             <tr v-for="user in users" :key="user.id">
               <td><strong>{{ user.nome }}</strong></td>
               <td>
-                <a :href="getEditRoute(user.id)" class="btn btn-primary">Editar</a>
+                <a :href="getEditRoute(user.id)" class="btn btn-action btn-success">Editar</a>
+                <button @click="confirmDelete(user.id)" class="btn btn-action btn-danger">Excluir</button>
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div v-if="showConfirmModal" class="custom-modal">
+      <div class="custom-modal-content">
+        <span class="close-button" @click="closeModal">&times;</span>
+        <p>Você tem certeza que deseja excluir este usuário?</p>
+        <button @click="deleteUser" class="btn btn-action btn-danger">Excluir</button>
+        <button @click="closeModal" class="btn btn-action btn-secondary">Cancelar</button>
+      </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div v-if="showResultModal" class="custom-modal">
+      <div class="custom-modal-content">
+        <span class="close-button" @click="closeResultModal">&times;</span>
+        <p>{{ resultMessage }}</p>
+        <button @click="closeResultModal" class="btn btn-primary">OK</button>
       </div>
     </div>
   </div>
@@ -37,6 +57,14 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      showConfirmModal: false,
+      showResultModal: false,
+      selectedUserId: null,
+      resultMessage: ''
+    };
+  },
   methods: {
     getEditRoute(id) {
       return `/psicologa/ficha/ler/editar/${id}`;
@@ -46,11 +74,48 @@ export default {
     },
     logOut() {
       window.location.href = '/logout';
+    },
+    confirmDelete(id) {
+      this.selectedUserId = id;
+      this.showConfirmModal = true;
+    },
+    closeModal() {
+      this.showConfirmModal = false;
+      this.selectedUserId = null;
+    },
+    closeResultModal() {
+      this.showResultModal = false;
+      this.selectedUserId = null;
+      window.location.reload();
+    },
+    deleteUser() {
+      fetch(`/users/${this.selectedUserId}`, {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json().then(data => ({ status: response.status, body: data })))
+      .then(({ status, body }) => {
+        if (status === 200) {
+          this.resultMessage = 'Erro ao excluir o usuário';
+          this.users = this.users.filter(user => user.id !== this.selectedUserId);
+        } else {
+          this.resultMessage = 'Usuário excluído com sucesso!';
+        }
+        this.showResultModal = true;
+        this.showConfirmModal = false;
+      })
+      .catch(error => {
+        this.resultMessage = 'Usuário excluído com sucesso!';
+        this.showResultModal = true;
+        this.showConfirmModal = false;
+      });
     }
   }
 };
 </script>
-
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
 
@@ -77,12 +142,13 @@ export default {
 
 .users-list-container {
   margin: 70px auto 0; /* Ajustado para adicionar espaço para o header */
-  width: 100%;
-  max-width: 800px; /* Largura máxima ajustada para ser 20% menor */
+  width: 35%; /* Largura explicitamente definida para 70% */
+  max-width: 35%; /* Largura máxima ajustada para 70% para garantir consistência */
   padding: 20px;
   background-color: #f7f7f7;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Garante que o padding não adicione largura extra */
 }
 
 .title {
@@ -127,48 +193,70 @@ export default {
   font-weight: bold;
 }
 
-.btn-primary {
-  background-color: #007bff;
-  color: white;
+.btn-action {
+  display: inline-block;
   padding: 10px 20px;
   text-decoration: none;
   border-radius: 5px;
-  transition: background-color 0.3s;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
   color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 15px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s;
+  margin-right: 10px;
 }
 
-.btn-secondary:hover {
-  background-color: #5a6268;
-  transform: translateY(-2px);
+.btn-success {
+  background-color: #28a745;
+}
+
+.btn-success:hover {
+  background-color: #218838;
 }
 
 .btn-danger {
   background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 15px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
 }
 
 .btn-danger:hover {
   background-color: #c82333;
-  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Custom modal styles */
+.custom-modal {
+  position: fixed;
+  z-index: 1050;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 18px;
+  cursor: pointer;
 }
 </style>
+

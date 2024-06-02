@@ -5,7 +5,7 @@
       <button @click="logOut" class="btn btn-danger">Logout</button>
     </div>
     <div class="history-container">
-      <h1 class="title">Agendamentos</h1>
+      <h1 class="title">Histórico de Agendamentos</h1>
       <div class="table-container">
         <table class="history-table">
           <thead>
