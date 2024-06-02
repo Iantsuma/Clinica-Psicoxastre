@@ -30,4 +30,10 @@ E após isso e com os containers executando, execute o seguinte comando:
 ```
 npm start
 ```
+# Encerrar Container
+Para encerrar os containers ativos, basta utiliza o comando:
+```
+docker swarm leave --force
+```
+
 
