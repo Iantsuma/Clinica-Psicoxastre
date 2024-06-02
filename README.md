@@ -18,7 +18,7 @@ Para finalizar a criação dos containers e utilizar o Swarm, execute o comando:
 # ElectronJS
 Caso deseje executar o programa pelo app executável electronjs, entre na pasta laravel:
 - cd laravel
-  ```
+  
 E após isso e com os containers executando, execute o seguinte comando:
 - npm start
 
