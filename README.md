@@ -48,5 +48,13 @@ Psicologa:
 - rudiger@psicologa.com
   
 OBS: todas as senhas são 12345678
+# TDD
+- Para realizar os testes automatizados substitua na .env o DB_HOST=db por DB_HOST=127.0.0.1
+- Certifique-se de estar dentro do diretório do laravel e execute o seguinte comando:
+  ```
+  php artisan test tests/Feature/CompleteTest.php
+  ```
+
+  Após isso, retorne a DB_HOST para db
 
 
