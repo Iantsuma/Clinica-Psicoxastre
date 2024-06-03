@@ -13,9 +13,6 @@ apache2-foreground &
 # Mudar para o diretório do Laravel
 cd /var/www/html
 
-# Copiar a .env.example para .env
-cp .env.example .env
-
 # Gerar a chave da aplicação Laravel
 php artisan key:generate
 

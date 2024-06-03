@@ -1,6 +1,0 @@
-docker swarm init 
-docker network create --driver overlay --attachable app-network
-docker build -t myapp_php .
-docker stack deploy -c docker-compose.yml myapp
-
-docker swarm leave --force

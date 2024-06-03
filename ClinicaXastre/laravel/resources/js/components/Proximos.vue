@@ -26,7 +26,7 @@
               <td><strong>{{ agendamento.status }}</strong></td>
               <td><strong>{{ new Date(agendamento.created_at).toLocaleDateString() }}</strong></td>
               <td>
-                <button @click="confirmDelete(agendamento.id)" class="btn btn-danger">Deletar</button>
+                <button @click="confirmDelete(agendamento.id)" class="btn btn-danger">Cancelar</button>
               </td>
             </tr>
           </tbody>
@@ -38,9 +38,9 @@
     <div v-if="showConfirmModal" class="custom-modal">
       <div class="custom-modal-content">
         <span class="close-button" @click="closeModal">&times;</span>
-        <p>Você tem certeza que deseja deletar este agendamento?</p>
-        <button @click="deleteAgendamento" class="btn btn-danger">Deletar</button>
-        <button @click="closeModal" class="btn btn-secondary">Cancelar</button>
+        <p>Você tem certeza que deseja cancelar este agendamento?</p>
+        <button @click="deleteAgendamento" class="btn btn-danger">Sim</button>
+        <button @click="closeModal" class="btn btn-secondary">Não</button>
       </div>
     </div>
 
@@ -103,16 +103,16 @@ export default {
       .then(response => response.json().then(data => ({ status: response.status, body: data })))
       .then(({ status, body }) => {
         if (status === 200) {
-          this.resultMessage = 'Erro ao deletar o agendamento';
+          this.resultMessage = 'Erro ao cancelar o agendamento';
           this.agendas = this.agendas.filter(agendamento => agendamento.id !== this.selectedAgendamentoId);
         } else {
-          this.resultMessage = 'Agendamento deletado com sucesso!';
+          this.resultMessage = 'Agendamento cancelado com sucesso!';
         }
         this.showResultModal = true;
         this.showConfirmModal = false;
       })
       .catch(error => {
-        this.resultMessage = 'Agendamento deletado com sucesso!';
+        this.resultMessage = 'Agendamento cancelado com sucesso!';
         this.showResultModal = true;
         this.showConfirmModal = false;
       });
