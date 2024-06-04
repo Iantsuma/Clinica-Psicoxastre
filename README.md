@@ -45,9 +45,9 @@ Psicologa:
 OBS: todas as senhas são 12345678
 # TDD
 - Certifique-se de estar dentro do diretório do laravel e execute o seguinte comando:
-  ```
-  php artisan test tests/Feature/CompleteTest.php
-  ```
+```
+php artisan test tests/Feature/CompleteTest.php
+```
 
 # Encerrar Container
 Para encerrar os containers ativos, basta utiliza o comando:
