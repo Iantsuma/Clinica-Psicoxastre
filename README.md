@@ -32,11 +32,6 @@ E após isso e com os containers executando, execute o seguinte comando:
 ```
 npm start
 ```
-# Encerrar Container
-Para encerrar os containers ativos, basta utiliza o comando:
-```
-docker swarm leave --force
-```
 
 # Dados cadastrais psicologa e secretaria
 Secretaria:
@@ -49,12 +44,16 @@ Psicologa:
   
 OBS: todas as senhas são 12345678
 # TDD
-- Para realizar os testes automatizados substitua na .env o DB_HOST=db por DB_HOST=127.0.0.1
 - Certifique-se de estar dentro do diretório do laravel e execute o seguinte comando:
   ```
   php artisan test tests/Feature/CompleteTest.php
   ```
 
-  Após isso, retorne a DB_HOST para db
+# Encerrar Container
+Para encerrar os containers ativos, basta utiliza o comando:
+```
+docker swarm leave --force
+```
+
 
 
