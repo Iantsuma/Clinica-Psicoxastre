@@ -21,8 +21,8 @@ class AgendaController extends Controller
 
     public function info($sessao_id)
     {
-        $agendamento = Agenda::find($sessao_id);
-        return view('info', ['agendamento' => $agendamento]);
+        $agenda = Agenda::where('id', $sessao_id)->firstOrFail();
+        return view('info', ['agenda' => $agenda]);
     }
     
     public function documento()
@@ -106,14 +106,8 @@ class AgendaController extends Controller
 
     public function destroy($id)
     {
-        $agendamento = Agenda::find($id);
-        
-        if ($agendamento) {
-            $agendamento->delete();
-            return response()->json(['message' => 'Agendamento deletado com sucesso!'], 200);
-        } else {
-            return response()->json(['message' => 'Agendamento não encontrado'], 404);
-        }
+        $updated = $this->agenda->where('id', $id)->update(['status' => 'cancelada']);
+       
     }
     
     public function read()
@@ -125,6 +119,14 @@ class AgendaController extends Controller
                         ->select('agendas.*', 'users.nome as psi_nome')
                         ->get();
         return view('proximos', ['agenda' => $agenda]);
+    }
+
+    public function update(Request $request)
+    {
+        $agenda = Agenda::findOrFail($request->input('id'));
+        $agenda->update($request->all());
+
+        return response()->json(['message' => 'Informações atualizadas com sucesso!'], 200);
     }
 }
 

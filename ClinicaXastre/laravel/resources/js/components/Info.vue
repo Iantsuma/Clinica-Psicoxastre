@@ -6,46 +6,28 @@
     </div>
     <div class="container">
       <div class="form-container">
-        <h1 class="logo">Inserir Informações</h1>
+        <h1 class="logo">Inserção de Informações</h1>
         <form @submit.prevent="submitForm" class="form-stylish">
-          <div class="mb-3">
-            <label for="hora_inicio" class="form-label">Horário de Inicio</label>
-            <input type="text" id="hora_inicio" class="form-control" v-model="form.hora_inicio" placeholder="Hora de inicio" required>
+          <div class="form-group mb-3">
+            <label for="hora_inicio" class="form-label">Hora Início</label>
+            <input type="time" id="hora_inicio" class="form-control" v-model="form.hora_inicio" required>
           </div>
-          <div class="mb-3">
-            <label for="hora_fim" class="form-label">Horário de Encerramento</label>
-            <input type="text" id="hora_fim" class="form-control" v-model="form.hora_fim" placeholder="Hora de Fim" required>
+          <div class="form-group mb-3">
+            <label for="hora_fim" class="form-label">Hora Fim</label>
+            <input type="time" id="hora_fim" class="form-control" v-model="form.hora_fim" required>
           </div>
-          <div class="mb-3">
+          <div class="form-group mb-3">
             <label for="tema" class="form-label">Tema</label>
-            <input type="text" id="tema" class="form-control" v-model="form.tema" placeholder="Tema" required>
+            <input type="text" id="tema" class="form-control" v-model="form.tema" placeholder="Tema">
           </div>
-          <div class="mb-3">
-            <label for="avaliacao" class="form-label">Avaliação da Sessão</label>
-            <input type="text" id="avaliacao" class="form-control" v-model="form.avaliacao" placeholder="Avaliação" required>
+          <div class="form-group mb-3">
+            <label for="avaliacao" class="form-label">Avaliação</label>
+            <textarea id="avaliacao" class="form-control" v-model="form.avaliacao" placeholder="Avaliação"></textarea>
           </div>
           <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Inserir">
+            <input type="submit" class="btn btn-primary" value="Salvar">
           </div>
         </form>
-      </div>
-    </div>
-
-    <!-- Custom Modal for Success -->
-    <div v-if="showSuccessModal" class="custom-modal">
-      <div class="custom-modal-content">
-        <span class="close-button" @click="closeSuccessModal">&times;</span>
-        <p>Informações inseridas com sucesso.</p>
-        <button @click="redirectToPsicologa" class="btn btn-primary">OK</button>
-      </div>
-    </div>
-
-    <!-- Custom Modal for Error -->
-    <div v-if="showErrorModal" class="custom-modal">
-      <div class="custom-modal-content">
-        <span class="close-button" @click="closeErrorModal">&times;</span>
-        <p>{{ errorMessage }}</p>
-        <button @click="closeErrorModal" class="btn btn-primary">OK</button>
       </div>
     </div>
   </div>
@@ -54,11 +36,11 @@
 <script>
 export default {
   props: {
-    storeRoute: {
+    updateRoute: {
       type: String,
       required: true
     },
-    agendamento: {
+    agenda: {
       type: Object,
       required: true
     }
@@ -66,58 +48,36 @@ export default {
   data() {
     return {
       form: {
-        sessao_id: this.agendamento.id,
-        data: new Date(this.agendamento.created_at).toLocaleDateString(),
-        hora_inicio: '',
-        hora_fim: '',
-        tema: '',
-        avaliacao: ''
-      },
-      showSuccessModal: false,
-      showErrorModal: false,
-      errorMessage: ''
+        id: this.agenda.id,
+        hora_inicio: this.agenda.hora_inicio || '',
+        hora_fim: this.agenda.hora_fim || '',
+        tema: this.agenda.tema || '',
+        avaliacao: this.agenda.avaliacao || ''
+      }
     };
   },
   methods: {
-    async submitForm() {
-      try {
-        const response = await fetch(this.storeRoute, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-          },
-          body: JSON.stringify(this.form)
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          this.errorMessage = errorData.message || 'Erro ao inserir informações.';
-          this.showErrorModal = true;
-          return;
-        }
-
-        this.showSuccessModal = true;
-      } catch (error) {
-        this.errorMessage = 'Você já inseriu informações nessa sessão';
-        this.showErrorModal = true;
-      }
-    },
-    closeSuccessModal() {
-      this.showSuccessModal = false;
-      window.location.href = '/psicologa/ficha/sessoes';
-    },
-    closeErrorModal() {
-      this.showErrorModal = false;
+    submitForm() {
+      fetch(this.updateRoute, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify(this.form)
+      })
+      .then(() => {
+        window.location.href = '/psicologa/ficha/sessoes';
+      })
+      .catch(error => {
+        console.error('Erro ao submeter o formulário:', error);
+      });
     },
     goBack() {
-      window.location.href = '/psicologa/ficha/sessoes';
+      window.history.back();
     },
     logOut() {
       window.location.href = '/logout';
-    },
-    redirectToPsicologa(){
-      window.location.href = '/psicologa/ficha/sessoes';
     }
   }
 };
@@ -153,7 +113,7 @@ export default {
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 70px; /* Adicionando margem superior para compensar o header fixo */
+  margin-top: 70px;
 }
 
 .form-container {
@@ -178,7 +138,9 @@ export default {
   flex-direction: column;
 }
 
-.mb-3 {
+.form-group {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 20px;
 }
 
@@ -246,37 +208,5 @@ export default {
 .btn-danger:hover {
   background-color: #c82333;
   transform: translateY(-2px);
-}
-
-/* Custom modal styles */
-.custom-modal {
-  position: fixed;
-  z-index: 1050;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.custom-modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  max-width: 400px;
-  width: 100%;
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 18px;
-  cursor: pointer;
 }
 </style>

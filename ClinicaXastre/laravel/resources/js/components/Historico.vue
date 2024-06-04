@@ -22,8 +22,8 @@
               <td><strong>{{ agendamento.nome }}</strong></td>
               <td><strong>{{ agendamento.psi_nome }}</strong></td>
               <td><strong>{{ agendamento.descricao }}</strong></td>
-              <td><strong>{{ agendamento.status }}</strong></td>
-              <td><strong>{{ new Date(agendamento.created_at).toLocaleDateString() }}</strong></td> <!-- Exibir nome do psicólogo -->
+              <td><strong :class="statusClass(agendamento.status)">{{ agendamento.status }}</strong></td>
+              <td><strong>{{ new Date(agendamento.created_at).toLocaleDateString() }}</strong></td>
             </tr>
           </tbody>
         </table>
@@ -47,6 +47,20 @@ export default {
     },
     logOut() {
       window.location.href = '/logout';
+    },
+    statusClass(status) {
+      switch (status) {
+        case 'cancelada':
+          return 'status-cancelada';
+        case 'concluida':
+          return 'status-concluida';
+        case 'em-espera':
+          return 'status-em-espera';
+        case 'agendado':
+          return 'status-agendada';
+        default:
+          return '';
+      }
     }
   }
 };
@@ -60,7 +74,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #f0f0f0; /* fundo cinza */
+  background: #f0f0f0;
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -78,7 +92,7 @@ export default {
 }
 
 .history-container {
-  margin: 70px auto 0; /* Ajustado para adicionar espaço para o header */
+  margin: 70px auto 0;
   width: 100%;
   max-width: 800px;
   padding: 20px;
@@ -123,6 +137,23 @@ export default {
 
 .history-table tbody tr:hover {
   background-color: #ddd;
+}
+
+/* Classes dinâmicas para o status */
+.status-cancelada {
+  color: red;
+}
+
+.status-concluida {
+  color: green;
+}
+
+.status-em-espera {
+  color: rgb(255, 122, 45);
+}
+
+.status-agendada {
+  color: blue;
 }
 
 .btn-secondary {

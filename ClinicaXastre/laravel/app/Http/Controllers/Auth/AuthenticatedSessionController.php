@@ -16,6 +16,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
+        Auth::logout();
         return view('auth.login');
     }
 
@@ -41,7 +42,7 @@ class AuthenticatedSessionController extends Controller
     }
 
     // Redirecionamento padrão caso a role não seja nenhuma das especificadas
-    return redirect()->intended(url('/'));
+    return redirect()->intended(url('/login'));
 }
 
 
@@ -56,6 +57,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }

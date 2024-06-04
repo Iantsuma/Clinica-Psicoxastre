@@ -15,7 +15,9 @@ class Agenda extends Model
         'psi_id',
         'descricao',
         'status',
-        'encaminhamentos',
-        'atestados',
+        'hora_inicio',
+        'hora_fim',
+        'tema',
+        'avaliacao',
     ];
 }

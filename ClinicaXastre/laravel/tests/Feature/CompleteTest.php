@@ -1,6 +1,6 @@
 <?php
 
-// tests/Feature/TesteCompleto.php
+// tests/Feature/CompleteTest.php
 
 namespace Tests\Feature;
 
@@ -8,7 +8,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Agenda;
-use App\Models\Info;
 use Illuminate\Support\Facades\Schema;
 
 class CompleteTest extends TestCase
@@ -69,11 +68,6 @@ class CompleteTest extends TestCase
         $this->assertTrue(Schema::hasTable('agendas'));
     }
 
-    public function test_migracao_tabela_infos()
-    {
-        $this->assertTrue(Schema::hasTable('infos'));
-    }
-
     // Testes de Modelos
     public function test_criacao_usuario()
     {
@@ -87,11 +81,19 @@ class CompleteTest extends TestCase
         $this->assertDatabaseHas('agendas', ['id' => $agenda->id]);
     }
 
-    public function test_criacao_info()
+    // Teste para atualização de usuário
+    public function test_atualizacao_usuario()
     {
-        $info = Info::factory()->create();
-        $this->assertDatabaseHas('infos', ['id' => $info->id]);
+        $user = User::factory()->create(['email' => 'update@example.com']);
+        $user->update(['email' => 'updated@example.com']);
+        $this->assertDatabaseHas('users', ['email' => 'updated@example.com']);
+    }
+
+    // Teste para exclusão de agenda
+    public function test_exclusao_agenda()
+    {
+        $agenda = Agenda::factory()->create();
+        $agenda->delete();
+        $this->assertDatabaseMissing('agendas', ['id' => $agenda->id]);
     }
 }
-
-

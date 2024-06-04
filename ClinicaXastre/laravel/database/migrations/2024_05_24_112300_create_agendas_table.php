@@ -19,8 +19,10 @@ return new class extends Migration
             $table->text('descricao'); // Campo para a descrição
             $table->string('status'); // Campo para o status
             $table->timestamps();
-            $table->text('encaminhamentos')->nullable();
-            $table->text('atestados')->nullable();
+            $table->string('hora_inicio')->nullable();
+            $table->string('hora_fim')->nullable();
+            $table->string('tema')->nullable();
+            $table->string('avaliacao')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('psi_id')->references('idpsi')->on('users')->onDelete('cascade');
         

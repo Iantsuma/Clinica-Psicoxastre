@@ -13,23 +13,19 @@ use Barryvdh\DomPDF\Facade\Pdf;
 Route::get('/', [HomeController::class, 'index'])->name('index');
 
 Route::get('/document/{id}', function($id){
-    // Obtenha o usuário pelo ID
+ 
     $user = \App\Models\User::findOrFail($id);
 
-    // Gera o PDF a partir da view 'document'
     $pdf = PDF::loadView('atestado', ['user' => $user]);
 
-    // Retorna o PDF para download
-    return $pdf->download('certificado_medico.pdf');
+    return $pdf->download('atestado_medico.pdf');
 });
 
 Route::post('/encaminhamento', function(Request $request){
     $text = $request->input('text');
 
-    // Gera o PDF a partir da view 'encaminhamento' e passa o texto como dado
     $pdf = PDF::loadView('encaminhamento', compact('text'));
 
-    // Retorna o PDF para download
     return $pdf->download('encaminhamento_medico.pdf');
 })->name('encaminhamento');
 
@@ -193,8 +189,7 @@ Route::middleware('auth')->group(function () {
 
 Route::delete('/agendamentos/{id}', [AgendaController::class, 'destroy'])->name('agenda.destroy');
 Route::delete('/users/{id}', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-
+Route::put('/psicologa/ficha/sessoes/info/update', [AgendaController::class, 'update'])->name('agenda.update');
 
 Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('AuthenticatedSession.destroy');
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('AuthenticatedSession.create');

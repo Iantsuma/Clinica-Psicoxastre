@@ -3,7 +3,7 @@
 @section('title', 'Pacientes')
 
 @section('content')
-<info store-route="{{ route('info.store') }}" :agendamento='@json($agendamento)'></info>
+<info update-route="{{ route('agenda.update') }}" :agenda='@json($agenda)'></info>
 @endsection
 
 
